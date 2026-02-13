@@ -31,6 +31,7 @@ body {
   background: radial-gradient(circle at top, #151922, #0d0f14);
   color: var(--text);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 header {
@@ -50,68 +51,59 @@ header h1 {
   letter-spacing: -2px;
 }
 
-header p { color: var(--muted); margin-top: 8px; font-weight: 500; }
+/* WELCOME MODAL */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 3000; visibility: hidden; opacity: 0; transition: 0.4s ease;
+}
 
+.modal-content {
+  background: #11141d; border: 1px solid var(--border);
+  padding: 35px; border-radius: 20px; text-align: center;
+  max-width: 420px; width: 90%; box-shadow: var(--shadow);
+}
+
+.modal-content h2 { color: var(--accent); margin: 0 0 15px 0; }
+.modal-content p { color: var(--muted); line-height: 1.6; margin-bottom: 25px; }
+
+/* CONTROLS */
 .controls {
-  display: flex;
-  gap: 12px;
-  padding: 18px;
-  flex-wrap: wrap;
-  justify-content: center;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(var(--blur));
-  border-radius: var(--round);
-  margin: 0 auto 30px auto;
-  width: clamp(260px, 95%, 1200px);
-  box-shadow: var(--shadow);
+  display: flex; gap: 12px; padding: 18px; flex-wrap: wrap;
+  justify-content: center; background: var(--glass);
+  border: 1px solid var(--border); backdrop-filter: blur(var(--blur));
+  border-radius: var(--round); margin: 0 auto 30px auto;
+  width: clamp(260px, 95%, 1200px); box-shadow: var(--shadow);
 }
 
 .controls select, .controls input, .controls button {
-  padding: 12px 16px;
-  border-radius: var(--round);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 0.95rem;
-  transition: 0.2s ease;
+  padding: 12px 16px; border-radius: var(--round);
+  background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border);
+  color: var(--text); font-size: 0.95rem; transition: 0.2s ease;
 }
 
 .controls input { flex-grow: 2; min-width: 250px; }
-.controls select { flex-grow: 1; }
-
-.controls select:focus, .controls input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
 
 button {
-  cursor: pointer;
+  cursor: pointer; font-weight: 600;
   background: linear-gradient(135deg, #7aa2ff55, #8bd8ff33);
-  font-weight: 600;
 }
 
 button:hover { transform: scale(1.04); border-color: var(--accent2); }
 
+/* GRID */
 .grid {
-  padding: 20px;
-  display: grid;
-  gap: 25px;
+  padding: 20px; display: grid; gap: 25px;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  width: clamp(260px, 95%, 1500px);
-  margin: auto;
+  width: clamp(260px, 95%, 1500px); margin: auto;
 }
 
 .card {
-  background: var(--card);
-  border-radius: var(--round);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  backdrop-filter: blur(var(--blur));
-  box-shadow: var(--card-shadow);
-  transition: 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  background: var(--card); border-radius: var(--round);
+  border: 1px solid var(--border); overflow: hidden;
+  backdrop-filter: blur(var(--blur)); box-shadow: var(--card-shadow);
+  transition: 0.3s ease; display: flex; flex-direction: column;
 }
 
 .card:hover { transform: translateY(-8px); border-color: var(--accent); }
@@ -120,55 +112,44 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
 .title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
 .meta { color: var(--muted); margin-bottom: 12px; font-size: 0.9rem; }
 
-.card-actions {
-  margin-top: auto;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
+.card-actions { margin-top: auto; display: flex; gap: 10px; align-items: center; }
 .card-link { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
 .copy-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border);
+  color: var(--text); padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;
 }
 
-#backToTop {
-  position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
-  border-radius: 50%; background: var(--glass); backdrop-filter: blur(10px);
-  border: 1px solid var(--border); color: var(--accent); font-size: 24px;
-  cursor: pointer; display: none; z-index: 1000; transition: 0.3s;
-}
-
-#loadMore { display: block; margin: 40px auto; padding: 14px 40px; }
-
-/* Toast Notification */
 #toast {
   position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-  background: var(--accent); color: #000; padding: 10px 20px;
+  background: var(--accent); color: #000; padding: 12px 24px;
   border-radius: 30px; font-weight: 700; display: none; z-index: 2000;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 @media (max-width: 800px) {
   header h1 { font-size: 2.5rem; }
   .controls { width: 95%; flex-direction: column; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 }
 </style>
 </head>
 <body>
 
+<div id="welcomeModal" class="modal-overlay">
+  <div class="modal-content">
+    <h2>Welcome to VortexAnime</h2>
+    <p>Step into the vortex. Search globally for any anime, filter by your favorite genres, and share your finds with the world.</p>
+    <button id="closeModal" style="width: 100%; padding: 15px; margin-top: 10px;">Enter the Vortex</button>
+  </div>
+</div>
+
 <header>
   <h1>VortexAnime</h1>
-  <p>The Ultimate Vortex for Global Anime Discovery</p>
+  <p>Universal Discovery via AniList API</p>
 </header>
 
 <div class="controls">
-  <input id="search" type="text" placeholder="Search any anime title..." />
+  <input id="search" type="text" placeholder="Search title (e.g. Dragon Ball)..." />
   <select id="genre">
     <option value="">All Genres</option>
     <option value="Action">Action</option>
@@ -178,15 +159,10 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
     <option value="Fantasy">Fantasy</option>
     <option value="Horror">Horror</option>
     <option value="Mecha">Mecha</option>
-    <option value="Music">Music</option>
-    <option value="Mystery">Mystery</option>
-    <option value="Psychological">Psychological</option>
     <option value="Romance">Romance</option>
     <option value="Sci-Fi">Sci-Fi</option>
-    <option value="Slice of Life">Slice of Life</option>
     <option value="Sports">Sports</option>
     <option value="Supernatural">Supernatural</option>
-    <option value="Thriller">Thriller</option>
   </select>
   <select id="year"></select>
   <select id="season">
@@ -200,15 +176,8 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
 </div>
 
 <div id="grid" class="grid"></div>
-<button id="loadMore" style="display: none;">Explore More</button>
-<button id="backToTop">↑</button>
+<button id="loadMore" style="display: none; margin: 40px auto; padding: 15px 45px;">Explore More</button>
 <div id="toast">Link Copied!</div>
-
-<footer>
-  <p style="text-align: center; color: var(--muted); padding: 40px 0; font-size: 0.9rem;">
-    VortexAnime • Powered by AniList API
-  </p>
-</footer>
 
 <script>
   const grid = document.getElementById("grid");
@@ -217,10 +186,25 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
   const genreSel = document.getElementById("genre");
   const searchInput = document.getElementById("search");
   const loadMoreBtn = document.getElementById("loadMore");
-  const backToTopBtn = document.getElementById("backToTop");
+  const modal = document.getElementById("welcomeModal");
+  const closeModal = document.getElementById("closeModal");
   const toast = document.getElementById("toast");
 
   let currentPage = 1;
+
+  // Modal logic
+  window.addEventListener('load', () => {
+    if (!localStorage.getItem("vortex_v1_visited")) {
+      modal.style.visibility = "visible";
+      modal.style.opacity = "1";
+    }
+  });
+
+  closeModal.onclick = () => {
+    modal.style.opacity = "0";
+    setTimeout(() => modal.style.visibility = "hidden", 400);
+    localStorage.setItem("vortex_v1_visited", "true");
+  };
 
   function setupYears() {
     const CURRENT_YEAR = new Date().getFullYear();
@@ -234,7 +218,7 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
   async function fetchAnime(isNewSearch = true) {
     if (isNewSearch) {
       currentPage = 1;
-      grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Entering the Vortex...</p>";
+      grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; opacity: 0.6;'>Opening the Vortex...</p>";
     }
 
     const searchTerm = searchInput.value.trim();
@@ -274,7 +258,7 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
       renderCards(data.media);
       loadMoreBtn.style.display = data.pageInfo.hasNextPage ? "block" : "none";
     } catch (err) {
-      grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Vortex error. Try again.</p>";
+      grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Connection failed. Try refreshing!</p>";
     }
   }
 
@@ -315,9 +299,6 @@ button:hover { transform: scale(1.04); border-color: var(--accent2); }
     clearTimeout(timer);
     timer = setTimeout(() => fetchAnime(true), 600);
   };
-
-  window.onscroll = () => backToTopBtn.style.display = window.scrollY > 500 ? "block" : "none";
-  backToTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   fetchAnime(true);
 </script>
